@@ -6,4 +6,4 @@ playing around with three js to make stuff
 
 uses basic random walk algo
 
-<img src=""/>
+<img src="https://github.com/keegss/generative-art/blob/master/dot/cap.JPG"/>
