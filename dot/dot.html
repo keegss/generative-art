@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <title>dot</title>
+
+      <!-- ThreesJs --->
+      <script  src="https://threejs.org/build/three.js"></script>
+    </head>
+    <body>
+
+        <script>
+
+          class superCoolDot {
+
+            constructor() {
+              var dotGeo = new THREE.BufferGeometry();
+
+
+              var positions = [];
+              positions.push(0, 0, 0);
+              var colors = [];
+              colors.push(255, 1, 0);
+
+              dotGeo.addAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ) );
+              dotGeo.addAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
+
+              var dotMat = new THREE.PointsMaterial( { size: 3, vertexColors: THREE.VertexColors, depthTest: false, sizeAttenuation: false } );
+
+              this.theDot = new THREE.Points( dotGeo, dotMat );
+            }
+
+            walk() {
+              var choice = Math.floor((Math.random() * 4) + 1)
+
+              if (choice == 1)
+              {
+                this.theDot.position.y = this.theDot.position.y + 1;
+              }
+              else if (choice == 2)
+              {
+                this.theDot.position.x = this.theDot.position.x + 1;
+              }
+              else if (choice == 3)
+              {
+                this.theDot.position.x = this.theDot.position.x - 1;
+              }
+              else if (choice == 4)
+              {
+                this.theDot.position.y = this.theDot.position.y - 1;
+              }
+            }
+          }
+
+          var renderer = new THREE.WebGLRenderer( { preserveDrawingBuffer: true} );
+          renderer.setPixelRatio( window.devicePixelRatio );
+          renderer.setSize( window.innerWidth, window.innerHeight );
+          renderer.autoClearColor = false;
+          renderer.setClearColor( 0xF9B3D1, 1 );
+          document.body.appendChild( renderer.domElement )
+
+          var scene = new THREE.Scene();
+
+          var camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 1000 );
+          camera.position.z = 100;
+
+          var ambientLight = new THREE.AmbientLight( '#FFFFFF' ),
+              hemiLight    = new THREE.HemisphereLight('#D63AF9', '#2F1847', 0),
+              light        = new THREE.PointLight( '#D63AF9', 1, 100);
+
+          ambientLight.position.set( 0, 0, 0 );
+          hemiLight.position.set( 0, 0, 0 );
+          light.position.set( 0, 0, 10 );
+
+          scene.add( ambientLight );
+          scene.add( hemiLight );
+          scene.add( light );
+
+          var dot = new superCoolDot();
+          scene.add(dot.theDot);
+
+          var render = () => {
+            requestAnimationFrame( render );
+
+            dot.walk();
+
+            renderer.render( scene, camera );
+          };
+
+          render();
+
+
+        </script>
+
+    </body>
+</html>
